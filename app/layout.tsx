@@ -8,6 +8,8 @@ import { Toaster } from "@/components/ui/toaster";
 import Footer from "@/components/footer";
 import { getFormattedPrice } from "@/lib/constants";
 import { TooltipProvider } from "@/components/ui/tooltip";
+import { AuthProvider } from "@/context/AuthContext";
+import { CreditProvider } from "@/context/CreditContext";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -188,19 +190,23 @@ export default function RootLayout({
         />
       </head>
       <body className={inter.className}>
-        <TooltipProvider>
-          <ThemeProvider
-            attribute="class"
-            defaultTheme="light"
-            enableSystem
-            disableTransitionOnChange
-          >
-            <Header />
-            {children}
-            <Footer />
-          </ThemeProvider>
-          <Toaster />
-        </TooltipProvider>
+        <AuthProvider>
+          <CreditProvider>
+            <TooltipProvider>
+              <ThemeProvider
+                attribute="class"
+                defaultTheme="light"
+                enableSystem
+                disableTransitionOnChange
+              >
+                <Header />
+                {children}
+                <Footer />
+              </ThemeProvider>
+              <Toaster />
+            </TooltipProvider>
+          </CreditProvider>
+        </AuthProvider>
       </body>
     </html>
   );
