@@ -14,3 +14,8 @@ export const formatPrice = (price: number): string => {
 export const getFormattedPrice = (): string => {
   return formatPrice(PRICING.CREDITS_PRICE);
 };
+
+// Get price value without currency symbol for SEO compliance
+export const getPriceValue = (): string => {
+  return PRICING.CREDITS_PRICE.toFixed(2);
+};

@@ -6,7 +6,7 @@ import { ThemeProvider } from "@/components/theme-provider";
 import Header from "@/components/header";
 import { Toaster } from "@/components/ui/toaster";
 import Footer from "@/components/footer";
-import { getFormattedPrice } from "@/lib/constants";
+import { getPriceValue } from "@/lib/constants";
 import { TooltipProvider } from "@/components/ui/tooltip";
 
 const inter = Inter({ subsets: ["latin"] });
@@ -17,7 +17,7 @@ const OG_IMAGE_TWITTER_PATH = OG_IMAGE_PATH;
 export const metadata: Metadata = {
   title:
     "AdMuseAI - AI-Powered Creative Generator for Ads, Travel Guides, Menus & More",
-  description: `Generate professional-quality ad creatives, travel guides, restaurant menus, magazine covers and more with AI. Upload your content and prompt, get stunning results in seconds. No design skills needed. Just ${getFormattedPrice()} per creative.`,
+  description: `Generate professional-quality ad creatives, travel guides, restaurant menus, magazine covers and more with AI. Upload your content and prompt, get stunning results in seconds. No design skills needed. Just ${getPriceValue()} per creative.`,
   icons: {
     icon: "/favicon.ico",
     shortcut: "/favicon.ico",
@@ -63,8 +63,8 @@ export const metadata: Metadata = {
     type: "website",
     locale: "en_US",
     title: "AdMuseAI - Generate Professional Creatives Instantly with AI",
-    description: `Transform your content into stunning ad creatives, travel guides, menus, magazine covers and more with AI. Professional results in seconds, no design skills needed. Just ${getFormattedPrice()} per creative.`,
-    url: "https://admuseai.com",
+    description: `Transform your content into stunning ad creatives, travel guides, menus, magazine covers and more with AI. Professional results in seconds, no design skills needed. Just ${getPriceValue()} per creative.`,
+    url: "https://admuseai.com/",
     siteName: "AdMuseAI",
     images: [
       {
@@ -96,7 +96,7 @@ export const metadata: Metadata = {
     },
   },
   alternates: {
-    canonical: "https://admuseai.com",
+    canonical: "https://admuseai.com/",
   },
   // verification: {
   //   google: "your-google-site-verification",
@@ -121,9 +121,9 @@ const jsonLd = {
   },
   offers: {
     "@type": "Offer",
-    url: "https://admuseai.com",
+    url: "https://admuseai.com/",
     priceCurrency: "USD",
-    price: getFormattedPrice(),
+    price: getPriceValue(),
     priceValidUntil: "2025-12-31",
     itemCondition: "http://schema.org/NewCondition",
     availability: "http://schema.org/InStock",

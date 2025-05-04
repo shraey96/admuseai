@@ -54,6 +54,18 @@ export async function generateAdCreative(
     if (options?.selectedIntent)
       formData.append("selectedIntent", options.selectedIntent);
 
+    if (typeof window !== "undefined") {
+      const params = new URLSearchParams(window.location.search);
+      const raw = params.get("mock_images"); // encoded string
+      const urls = raw ? decodeURIComponent(raw).split(",") : [];
+
+      if (urls.length > 0) {
+        urls.forEach((url) => {
+          formData.append("mock_images", url);
+        });
+      }
+    }
+
     const response = await fetch(`${FUNCTIONS_URL}/generate-gpt-images`, {
       method: "POST",
       body: formData,
