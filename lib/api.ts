@@ -56,10 +56,12 @@ export async function generateAdCreative(
 
     if (typeof window !== "undefined") {
       const params = new URLSearchParams(window.location.search);
-      const raw = params.get("mock_images"); // encoded string
-      const urls = raw ? decodeURIComponent(raw).split(",") : [];
+      const raw = params.get("mock_images");
 
-      if (urls.length > 0) {
+      if (raw) {
+        const decoded = decodeURIComponent(raw);
+        const urls = decoded.includes(",") ? decoded.split(",") : [decoded];
+
         urls.forEach((url) => {
           formData.append("mock_images", url);
         });
