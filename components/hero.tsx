@@ -2,7 +2,6 @@
 
 import { motion } from "framer-motion";
 import { Sparkles, Play } from "lucide-react";
-import { getFormattedPrice } from "@/lib/constants";
 import MediaScroller from "./media-scroller";
 import {
   HERO_SAMPLES_LEFT,
@@ -65,12 +64,12 @@ export default function Hero() {
                   <Sparkles className="h-4 w-4 text-indigo-600" />
                 </div>
                 <span className="text-zinc-700">
-                  <span className="line-through">
-                    Just {getFormattedPrice()} per ad creative
+                  <span className="font-medium">
+                    🎁 6 Free Credits · No Card Needed
                   </span>{" "}
-                  -{" "}
+                  <span className="text-zinc-400 font-medium">–</span>{" "}
                   <span className="bg-gradient-to-r from-green-500 via-emerald-500 to-teal-500 text-transparent bg-clip-text font-semibold animate-pulse">
-                    Free for a limited time
+                    Only pay if you love it.
                   </span>
                 </span>
               </div>
@@ -90,7 +89,7 @@ export default function Hero() {
                   ease: "easeInOut",
                 }}
               >
-                Create Winning Ad!
+                Try for Free!
               </motion.button>
               <button
                 onClick={() => scrollToElement("info-video")}

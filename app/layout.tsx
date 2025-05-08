@@ -6,7 +6,6 @@ import { ThemeProvider } from "@/components/theme-provider";
 import Header from "@/components/header";
 import { Toaster } from "@/components/ui/toaster";
 import Footer from "@/components/footer";
-import { getPriceValue } from "@/lib/constants";
 import { TooltipProvider } from "@/components/ui/tooltip";
 
 const inter = Inter({ subsets: ["latin"] });
@@ -15,9 +14,9 @@ const OG_IMAGE_PATH = "/images/og-desktop.png";
 const OG_IMAGE_TWITTER_PATH = OG_IMAGE_PATH;
 
 export const metadata: Metadata = {
-  title:
-    "AdMuseAI - AI-Powered Creative Generator for Ads, Travel Guides, Menus & More",
-  description: `Generate professional-quality ad creatives, travel guides, restaurant menus, magazine covers and more with AI. Upload your content and prompt, get stunning results in seconds. No design skills needed. Just ${getPriceValue()} per creative.`,
+  title: "AdMuseAI - AI Ad Creative Generator That Actually Works",
+  description:
+    "Create scroll-stopping ad creatives in seconds using AI. Upload your product, add a prompt, and get stunning marketing assets — no design skills or login required.",
   icons: {
     icon: "/favicon.ico",
     shortcut: "/favicon.ico",
@@ -62,8 +61,9 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     locale: "en_US",
-    title: "AdMuseAI - Generate Professional Creatives Instantly with AI",
-    description: `Transform your content into stunning ad creatives, travel guides, menus, magazine covers and more with AI. Professional results in seconds, no design skills needed. Just ${getPriceValue()} per creative.`,
+    title: "AdMuseAI - Generate Stunning Ad Creatives Instantly with AI",
+    description:
+      "AdMuseAI turns your product images into high-converting ad creatives using AI. Start free with 6 credits. No design experience or login needed.",
     url: "https://admuseai.com/",
     siteName: "AdMuseAI",
     images: [
@@ -79,7 +79,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Generate Professional Ad Creatives Instantly with AI | AdMuseAI",
     description:
-      "Create stunning ad creatives for your products using AI. Upload images, add a prompt, and get professional results in seconds. No design skills needed.",
+      "Create professional ad creatives using AI. Try it free — no signup required. Upload your product and get stunning results in seconds.",
     images: [OG_IMAGE_TWITTER_PATH],
     creator: "@admuseai",
     site: "@admuseai",
@@ -114,7 +114,7 @@ const jsonLd = {
   name: "AdMuseAI Creative Generator",
   image: "https://admuseai.com/images/og-desktop.png",
   description:
-    "AI-powered creative generator for ads, travel guides, menus, magazine covers and more.",
+    "AI-powered ad creative generator. Upload your product image and prompt to get professional ad creatives instantly.",
   brand: {
     "@type": "Brand",
     name: "AdMuseAI",
@@ -123,7 +123,7 @@ const jsonLd = {
     "@type": "Offer",
     url: "https://admuseai.com/",
     priceCurrency: "USD",
-    price: getPriceValue(),
+    price: 29,
     priceValidUntil: "2025-12-31",
     itemCondition: "http://schema.org/NewCondition",
     availability: "http://schema.org/InStock",

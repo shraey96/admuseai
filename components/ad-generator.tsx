@@ -9,24 +9,17 @@ import GenerationScreen from "./generation-screen";
 import ResultModal from "./result-modal";
 import GenerateButton from "./ui/generate-button";
 import { generateAdCreative } from "@/lib/api";
-import { toast } from "@/components/ui/use-toast";
-import Script from "next/script";
-import { initPayment } from "@/lib/payment";
 import AnimatedBorder from "@/components/animated-border";
 import { trackAnalytics, ANALYTICS_EVENTS } from "@/lib/analytics";
 import ConfettiPortal from "./ui/confetti-portal";
-import CopyrightNotice from "./copyright-notice";
+import { useToast } from "@/hooks/use-toast";
 
 import PromptWizard from "./prompt-wizard";
 import ImageUploader from "./image-uploader";
 import { scrollToElement } from "@/lib/utils";
-import { Play } from "lucide-react";
-
-import type { PromptWizardProps } from "./prompt-wizard";
+import { Play, AlertCircle } from "lucide-react";
 
 type Stage = "upload" | "generating" | "result";
-
-const IS_FREE = true;
 
 export default function AdGenerator() {
   const [stage, setStage] = useState<Stage>("upload");
@@ -40,11 +33,13 @@ export default function AdGenerator() {
   const [generatedImages, setGeneratedImages] = useState<string[] | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [errorType, setErrorType] = useState<string | null>(null);
   const [showResultModal, setShowResultModal] = useState(false);
   const [showConfetti, setShowConfetti] = useState(false);
 
   const [isWizardOpen, setIsWizardOpen] = useState(false);
   const confettiTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const { toast } = useToast();
 
   const handleGenerate = async () => {
     if (images.length === 0 || !wizardPayload) return;
@@ -53,34 +48,11 @@ export default function AdGenerator() {
       ...wizardPayload,
     });
 
-    const isPaddleReady = typeof window !== "undefined" && window.Paddle;
-
-    setError(null);
-
-    if (!isPaddleReady) {
-      toast({
-        title: "Payment System Loading",
-        description: "Please wait while we initialize the payment system.",
-        variant: "default",
-      });
-      setIsLoading(false);
-      return;
-    }
-
     try {
       // Initialize payment
       const uid = "user-" + Date.now();
       let transactionId = `t_${uid}`;
       let email = `${uid}@admuseai.com`;
-
-      if (!IS_FREE) {
-        const result = await initPayment(
-          "user@admuseai.com", // In a real app, this would be the user's email
-          "user-" + Date.now()
-        );
-        transactionId = result.transactionId;
-        email = result.email;
-      }
 
       // Show generation screen
       setStage("generating");
@@ -120,15 +92,49 @@ export default function AdGenerator() {
         return;
       }
 
-      setError(
-        err instanceof Error ? err.message : "An unknown error occurred"
-      );
-      toast({
-        title: "Generation Failed",
-        description:
-          err instanceof Error ? err.message : "An unknown error occurred",
-        variant: "destructive",
-      });
+      // Check for rate limit error
+      if (
+        err instanceof Error &&
+        (err.message.includes('error_code: "rate_limit_exceeded"') ||
+          err.message.includes("rateLimitResult.error"))
+      ) {
+        // Set error type only, no explicit error message
+        setError(null);
+        setErrorType("rate_limit_exceeded");
+
+        toast({
+          title: "Free Limit Reached",
+          description: (
+            <>
+              You've reached your free image generation limit.{" "}
+              <a
+                href="#pricing"
+                className="font-semibold underline text-indigo-600 hover:text-indigo-500"
+                onClick={() => {
+                  trackAnalytics("rate_limit_pricing_clicked", {
+                    source: "rate_limit_toast",
+                  });
+                  scrollToElement("pricing");
+                }}
+              >
+                Sign up for free credits
+              </a>
+            </>
+          ),
+          variant: "default",
+        });
+      } else {
+        // Existing generic error handling
+        const errorMessage =
+          err instanceof Error ? err.message : "An unknown error occurred";
+        setError(errorMessage);
+        setErrorType(null);
+        toast({
+          title: "Generation Failed",
+          description: errorMessage,
+          variant: "destructive",
+        });
+      }
     } finally {
       setIsLoading(false);
       setStage("upload");
@@ -140,6 +146,7 @@ export default function AdGenerator() {
     setWizardPayload(null);
     setGeneratedImages(null);
     setError(null);
+    setErrorType(null);
     setShowResultModal(false);
     removeConfetti();
   };
@@ -167,14 +174,6 @@ export default function AdGenerator() {
 
   return (
     <>
-      <Script
-        src="https://cdn.paddle.com/paddle/v2/paddle.js"
-        onLoad={() => {
-          if (window.Paddle) {
-            window.Paddle.Environment.set(process.env.PADDLE_ENV);
-          }
-        }}
-      />
       <div className="relative">
         <AnimatedBorder>
           <Card className="bg-white shadow-xl border border-gray-100 rounded-2xl overflow-hidden">
@@ -183,7 +182,27 @@ export default function AdGenerator() {
                 <h2 className="text-lg sm:text-xl font-semibold text-gray-800">
                   Try it out!
                 </h2>
-                {error && <p className="text-red-500 text-sm mt-2">{error}</p>}
+                {errorType === "rate_limit_exceeded" ? (
+                  <div className="mt-3 mb-1 py-1.5 text-left text-sm animate-pulse">
+                    <a
+                      href="#pricing"
+                      className="flex items-center gap-1.5 text-rose-600 font-semibold hover:text-rose-800 hover:underline transition-colors group"
+                      onClick={() => {
+                        trackAnalytics("rate_limit_pricing_clicked", {
+                          source: "rate_limit_subtle_link",
+                        });
+                        scrollToElement("pricing");
+                      }}
+                    >
+                      <AlertCircle className="h-4 w-4" />
+                      <span className="group-hover:underline">
+                        Free limit reached. Sign up for free credits →
+                      </span>
+                    </a>
+                  </div>
+                ) : (
+                  error && <p className="text-red-500 text-sm mt-2">{error}</p>
+                )}
               </div>
 
               <div className="space-y-4 sm:space-y-6">
@@ -205,10 +224,12 @@ export default function AdGenerator() {
                         placeholder="Describe your ad creative: guidelines, setting, lighting, mood, etc. E.g. 'Product shot of serum bottle on marble counter, modern bathroom, soft morning light'"
                         value={wizardPayload?.prompt || ""}
                         onChange={(e) => {
-                          setWizardPayload((prev) => ({
-                            ...prev,
-                            prompt: e.target.value,
-                          }));
+                          setWizardPayload((prev) => {
+                            return {
+                              ...prev,
+                              prompt: e.target.value,
+                            };
+                          });
                         }}
                         className="min-h-[120px] resize-none"
                       />

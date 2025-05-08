@@ -10,6 +10,7 @@ const NAV_ITEMS = [
   { href: "/#pricing", label: "Pricing" },
   { href: "/#faq", label: "FAQ" },
   { href: "/prompt-writing-guidelines", label: "Creative Guidelines" },
+  { href: "https://app.admuseai.com/login", label: "Login", target: "_blank" },
 ];
 
 export default function Header() {
@@ -51,18 +52,33 @@ export default function Header() {
 
         {/* Desktop Navigation */}
         <nav className="hidden md:flex items-center space-x-8">
-          {NAV_ITEMS.map((item) => (
-            <Link
-              key={item.href}
-              href={item.href}
-              className="text-lg font-medium text-zinc-500 hover:text-indigo-600 transition-colors"
-              onClick={() => {
-                trackLinkClicked(item.href);
-              }}
-            >
-              {item.label}
-            </Link>
-          ))}
+          {NAV_ITEMS.map((item) =>
+            item.label === "Login" ? (
+              <Link
+                key={item.href}
+                href={item.href}
+                target={item.target}
+                className="text-lg font-medium bg-indigo-600 text-white hover:bg-indigo-700 px-4 py-2 rounded-md transition-colors"
+                onClick={() => {
+                  trackLinkClicked(item.href);
+                }}
+              >
+                {item.label}
+              </Link>
+            ) : (
+              <Link
+                key={item.href}
+                href={item.href}
+                target={item.target}
+                className="text-lg font-medium text-zinc-500 hover:text-indigo-600 transition-colors"
+                onClick={() => {
+                  trackLinkClicked(item.href);
+                }}
+              >
+                {item.label}
+              </Link>
+            )
+          )}
         </nav>
 
         {/* Mobile Menu Button */}
@@ -82,19 +98,35 @@ export default function Header() {
       {isMobileMenuOpen && (
         <nav className="md:hidden bg-white border-t border-gray-100">
           <div className="container mx-auto py-4 px-4 space-y-4">
-            {NAV_ITEMS.map((item) => (
-              <Link
-                key={item.href}
-                href={item.href}
-                className="block text-lg font-medium text-zinc-500 hover:text-indigo-600 transition-colors"
-                onClick={() => {
-                  setIsMobileMenuOpen(false);
-                  trackLinkClicked(item.href);
-                }}
-              >
-                {item.label}
-              </Link>
-            ))}
+            {NAV_ITEMS.map((item) =>
+              item.label === "Login" ? (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  target={item.target}
+                  className="block text-center text-lg font-medium bg-indigo-600 text-white hover:bg-indigo-700 px-4 py-2 rounded-md transition-colors"
+                  onClick={() => {
+                    setIsMobileMenuOpen(false);
+                    trackLinkClicked(item.href);
+                  }}
+                >
+                  {item.label}
+                </Link>
+              ) : (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  target={item.target}
+                  className="block text-lg font-medium text-zinc-500 hover:text-indigo-600 transition-colors"
+                  onClick={() => {
+                    setIsMobileMenuOpen(false);
+                    trackLinkClicked(item.href);
+                  }}
+                >
+                  {item.label}
+                </Link>
+              )
+            )}
           </div>
         </nav>
       )}

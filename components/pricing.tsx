@@ -1,25 +1,19 @@
 "use client";
 
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import { Check } from "lucide-react";
 import { motion } from "framer-motion";
-import { getFormattedPrice } from "@/lib/constants";
+import PricingView from "./pricing/pricing-view";
+import { Button } from "@/components/ui/button";
+import { scrollToElement } from "@/lib/utils";
 
 export default function Pricing() {
   return (
-    <section id="pricing" className="scroll-mt-20 relative">
-      <div className="relative z-10">
-        <div className="text-center mb-12">
-          <h2 className="text-3xl font-bold text-[#4f46e5] mb-4">
+    <section id="pricing" className="scroll-mt-20 relative py-16 md:py-24">
+      <div className="relative z-10 container mx-auto px-4">
+        <div className="text-center mb-12 md:mb-16">
+          <h2 className="text-3xl md:text-4xl font-bold text-[#4f46e5] mb-4">
             Simple, Transparent Pricing
           </h2>
-          <p className="text-xl text-zinc-600 max-w-2xl mx-auto">
+          <p className="text-lg md:text-xl text-zinc-600 max-w-2xl mx-auto">
             No subscriptions, no hidden fees. Just pay for what you need.
           </p>
         </div>
@@ -29,44 +23,38 @@ export default function Pricing() {
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
           viewport={{ once: true, margin: "-100px" }}
-          className="max-w-md mx-auto"
+          className="max-w-5xl mx-auto"
         >
-          <Card className="border-0 shadow-xl overflow-hidden bg-white">
-            <CardHeader className="relative z-10 text-center pb-2">
-              <CardTitle className="text-2xl font-bold text-[#4f46e5]">
-                Single Ad Creative
-              </CardTitle>
-              <CardDescription>Perfect for one-off projects</CardDescription>
-              <div className="mt-4 text-4xl font-bold text-zinc-900">
-                {getFormattedPrice()}
-              </div>
-            </CardHeader>
-            <CardContent className="relative z-10 pt-4">
-              <ul className="space-y-3">
-                {[
-                  "High-quality AI-generated ad creative",
-                  "Upload your own product image",
-                  "Add up to 3 reference images",
-                  "Custom prompt guidance",
-                  "Immediate download",
-                  "Commercial usage rights",
-                ].map((feature, index) => (
-                  <motion.li
-                    key={index}
-                    className="flex items-center"
-                    initial={{ opacity: 0, x: -10 }}
-                    whileInView={{ opacity: 1, x: 0 }}
-                    transition={{ duration: 0.3, delay: index * 0.1 }}
-                    viewport={{ once: true }}
-                  >
-                    <Check className="h-5 w-5 text-[#4f46e5] mr-2 flex-shrink-0" />
-                    <span className="text-zinc-700">{feature}</span>
-                  </motion.li>
-                ))}
-              </ul>
-            </CardContent>
-          </Card>
+          <PricingView />
         </motion.div>
+
+        <div className="mt-32 text-center text-sm text-zinc-600">
+          <div className="font-medium text-zinc-800 mb-1">
+            ✨ Try AdMuseAI for Free
+          </div>
+          <div className="mb-1">
+            →
+            <a
+              href="https://app.admuseai.com/login"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-indigo-600 hover:underline font-medium mx-1"
+            >
+              Log in
+            </a>
+            to get 6 Free Credits
+          </div>
+          <div className="mb-1">
+            → Or
+            <button
+              onClick={() => scrollToElement("ad-generator")}
+              className="text-indigo-600 hover:underline font-medium mx-1 bg-transparent border-none p-0 cursor-pointer"
+            >
+              Generate your first ad free
+            </button>
+            – no signup needed!
+          </div>
+        </div>
       </div>
     </section>
   );
