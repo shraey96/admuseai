@@ -1,3 +1,6 @@
+const envPriceIds = process.env.DODO_PRICE_IDS || "";
+const formattedPriceIds = envPriceIds.split(",");
+
 export type PricingPlan = {
   id: string;
   name: string;
@@ -111,4 +114,7 @@ export const plans: PricingPlan[] = [
     ],
     ctaText: "Get Started",
   },
-];
+].map((plan, index) => ({
+  ...plan,
+  priceId: formattedPriceIds[index],
+}));

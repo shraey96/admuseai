@@ -93,11 +93,7 @@ export default function AdGenerator() {
       }
 
       // Check for rate limit error
-      if (
-        err instanceof Error &&
-        (err.message.includes('error_code: "rate_limit_exceeded"') ||
-          err.message.includes("rateLimitResult.error"))
-      ) {
+      if (err instanceof Error && err.message.includes("rate_limit_exceeded")) {
         // Set error type only, no explicit error message
         setError(null);
         setErrorType("rate_limit_exceeded");

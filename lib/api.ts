@@ -82,6 +82,10 @@ export async function generateAdCreative(
         .catch(() => null);
       console.error("API error response:", errorData);
 
+      if (errorData && errorData.error_code === "rate_limit_exceeded") {
+        throw new Error("rate_limit_exceeded");
+      }
+
       // Use the error message from the API if available
       if (errorData && errorData.error) {
         throw new Error(errorData.error);
