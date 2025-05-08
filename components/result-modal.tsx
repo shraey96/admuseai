@@ -52,7 +52,7 @@ export default function ResultModal({
   return (
     <>
       <Dialog open={isOpen} onOpenChange={() => handleAction("close")}>
-        <DialogContent className="max-w-2xl w-full pt-10 items-start md:items-center">
+        <DialogContent className="max-w-[95vw] md:max-w-2xl w-full pt-6 md:pt-10 items-start md:items-center h-[90vh] md:h-auto overflow-y-auto">
           <ResultScreen
             images={images}
             onGenerateAnother={() => {
@@ -64,7 +64,7 @@ export default function ResultModal({
       </Dialog>
 
       <AlertDialog open={showConfirmDialog} onOpenChange={setShowConfirmDialog}>
-        <AlertDialogContent>
+        <AlertDialogContent className="max-w-[90vw] md:max-w-md">
           <AlertDialogHeader>
             <AlertDialogTitle>Are you sure?</AlertDialogTitle>
             <AlertDialogDescription>
@@ -78,8 +78,10 @@ export default function ResultModal({
               )}
             </AlertDialogDescription>
           </AlertDialogHeader>
-          <AlertDialogFooter>
-            <AlertDialogCancel>Cancel</AlertDialogCancel>
+          <AlertDialogFooter className="flex-col space-y-2 sm:flex-row sm:space-y-0 sm:space-x-2">
+            <AlertDialogCancel className="mt-0 sm:mt-0">
+              Cancel
+            </AlertDialogCancel>
             <AlertDialogAction
               onClick={handleConfirm}
               className="bg-[#6366f1] hover:bg-[#5558e6]"

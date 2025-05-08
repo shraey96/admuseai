@@ -1,5 +1,5 @@
-import { Dialog, DialogContent } from "@/components/ui/dialog";
-import { Info } from "lucide-react";
+import { Dialog, DialogClose, DialogContent } from "@/components/ui/dialog";
+import { Info, X } from "lucide-react";
 import Image from "next/image";
 import { SAMPLE_IMAGES } from "@/constants/samples";
 import { Badge } from "@/components/ui/badge";
@@ -31,34 +31,36 @@ export default function ExamplePreview({
   ];
 
   const currentImageIsReference =
-    allImages.find((img) => img.url === example?.image)?.isReference || false;
+    allImages.find((img) => img.url === activeImage)?.isReference || false;
 
   return (
     <Dialog open onOpenChange={onClose}>
-      <DialogContent className="max-w-4xl p-0 gap-0">
-        <div className="p-6 pb-0">
-          <div className="flex items-center justify-between mb-4">
-            <div className="flex items-center">
-              <div className="h-8 w-8 flex items-center justify-center mr-3">
-                <img
-                  src="/images/admuse.png"
-                  alt="AdMuseAI Logo"
-                  className="h-8 w-8"
-                />
-              </div>
-              <span className="text-[#6366f1] font-semibold text-lg">
-                AdMuseAI
-              </span>
+      <DialogContent className="max-w-[95vw] md:max-w-4xl p-0 gap-0 h-[90vh] md:h-auto overflow-y-auto">
+        {/* Fixed close button that stays visible on scroll */}
+
+        <div className="p-4 sm:p-6 pb-0">
+          <div className="flex items-center mb-4 pr-8">
+            <div className="h-8 w-8 flex items-center justify-center mr-3">
+              <img
+                src="/images/admuse.png"
+                alt="AdMuseAI Logo"
+                className="h-8 w-8"
+              />
             </div>
+            <span className="text-[#6366f1] font-semibold text-lg">
+              AdMuseAI
+            </span>
           </div>
 
-          <h3 className="text-2xl font-bold text-gray-900 mb-2">
+          <h3 className="text-xl sm:text-2xl font-bold text-gray-900 mb-2">
             {example.headline}
           </h3>
-          <p className="text-gray-600">{example.description}</p>
+          <p className="text-sm sm:text-base text-gray-600">
+            {example.description}
+          </p>
         </div>
 
-        <div className="relative h-[min(65vh,480px)] w-full my-6 bg-[#F8F9FF]">
+        <div className="relative h-[min(50vh,320px)] sm:h-[min(65vh,480px)] w-full my-4 sm:my-6 bg-[#F8F9FF]">
           <Image
             src={activeImage}
             alt={example.adType}
@@ -76,11 +78,11 @@ export default function ExamplePreview({
         </div>
 
         {allImages.length > 1 && (
-          <div className="px-6">
+          <div className="px-4 sm:px-6">
             {example.referenceImages && example.referenceImages.length > 0 && (
               <div className="flex items-start gap-2 mb-4 p-3 bg-[#EEF2FF] rounded-lg border border-[#6366f1]/20">
                 <Info className="h-5 w-5 text-[#6366f1] mt-0.5 flex-shrink-0" />
-                <div className="text-sm text-[#4338ca]">
+                <div className="text-xs sm:text-sm text-[#4338ca]">
                   <p>
                     Want to create amazing ads like this?{" "}
                     <a
@@ -103,13 +105,13 @@ export default function ExamplePreview({
                 </div>
               </div>
             )}
-            <div className="flex gap-2 overflow-x-auto pb-4">
+            <div className="flex gap-2 overflow-x-auto pb-4 snap-x">
               {allImages.map((img, idx) => (
                 <TooltipProvider key={idx}>
                   <Tooltip>
                     <TooltipTrigger asChild>
                       <div
-                        className={`relative h-20 w-20 flex-shrink-0 rounded-lg overflow-hidden cursor-pointer group ${
+                        className={`relative h-16 w-16 sm:h-20 sm:w-20 flex-shrink-0 rounded-lg overflow-hidden cursor-pointer group snap-start ${
                           activeImage === img.url
                             ? "ring-2 ring-[#6366f1] ring-offset-2"
                             : "opacity-70 hover:opacity-100"
@@ -146,21 +148,25 @@ export default function ExamplePreview({
           </div>
         )}
 
-        <div className="p-6 pt-2 border-t">
-          <div className="grid grid-cols-3 gap-6">
+        <div className="p-4 sm:p-6 pt-2 border-t">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6">
             <div>
-              <h4 className="font-semibold text-gray-900 mb-1">Visual Style</h4>
-              <p className="text-gray-600">{example.visualStyle}</p>
+              <h4 className="font-semibold text-gray-900 text-sm sm:text-base mb-1">
+                Visual Style
+              </h4>
+              <p className="text-gray-600 text-sm">{example.visualStyle}</p>
             </div>
             <div>
-              <h4 className="font-semibold text-gray-900 mb-1">Tone</h4>
-              <p className="text-gray-600">{example.tone}</p>
+              <h4 className="font-semibold text-gray-900 text-sm sm:text-base mb-1">
+                Tone
+              </h4>
+              <p className="text-gray-600 text-sm">{example.tone}</p>
             </div>
             <div>
-              <h4 className="font-semibold text-gray-900 mb-1">
+              <h4 className="font-semibold text-gray-900 text-sm sm:text-base mb-1">
                 Template Used
               </h4>
-              <p className="text-gray-600">
+              <p className="text-gray-600 text-sm">
                 {getTemplateName(example.templateUsed)}
               </p>
             </div>

@@ -65,7 +65,6 @@ export function CreatableSelectComponent({
       value={selectedOption}
       onChange={(newValue) => onChange(newValue?.value || "")}
       onCreateOption={(inputValue) => {
-        const newOption = { label: inputValue, value: inputValue };
         onChange(inputValue);
       }}
       onMenuOpen={() => setIsMenuOpen(true)}
