@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import Link from "next/link";
 
 import {
   Dialog,
@@ -220,7 +219,15 @@ export default function PromptWizard({
       case "creatable-select":
         return (
           <CreatableSelectComponent
-            options={field.options}
+            options={[
+              {
+                label: "Type to add your own custom option",
+                value: "__instruction__",
+                description: "You can select from the list or create your own",
+                isDisabled: true,
+              },
+              ...field.options,
+            ]}
             value={value}
             onChange={handleChange}
             placeholder={field.placeholder}

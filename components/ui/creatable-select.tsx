@@ -9,6 +9,7 @@ interface Option {
   label: string;
   value: string;
   description?: string;
+  isDisabled?: boolean;
 }
 
 interface CreatableSelectProps {
@@ -74,7 +75,18 @@ export function CreatableSelectComponent({
       classNamePrefix="react-select"
       formatOptionLabel={(option) => (
         <div>
-          <div>{option.label}</div>
+          <div
+            className={
+              option.value === "__instruction__"
+                ? "italic text-gray-400 flex items-center"
+                : ""
+            }
+          >
+            {option.value === "__instruction__" && (
+              <span className="mr-1">💡</span>
+            )}
+            {option.label}
+          </div>
           {option.description && (
             <div className="text-xs text-gray-500">{option.description}</div>
           )}
